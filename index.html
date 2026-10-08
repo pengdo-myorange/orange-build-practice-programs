@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로그램 참여·수료 현황 대시보드</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main class="page">
+  <header class="card title-card">
+    <h1>프로그램 참여·수료 현황 대시보드</h1>
+    <p class="muted">연도별 CSV 자료를 읽어 참여자, 수료자, 수료율을 확인합니다. 정상 자료와 오류 자료는 섞지 않고 한 번에 한 묶음만 사용합니다.</p>
+    <div class="source-row">
+      <fieldset class="source-choice">
+        <legend>자료 선택</legend>
+        <label><input type="radio" name="source" value="sample" checked> 기본 샘플 (2024~2026)</label>
+        <label><input type="radio" name="source" value="error"> 오류 사례 샘플 (errors.csv)</label>
+        <label><input type="radio" name="source" value="upload"> 직접 선택한 파일</label>
+      </fieldset>
+      <div class="file-pick">
+        <label for="fileInput" class="file-label">CSV 파일 선택 (여러 개 가능)</label>
+        <input type="file" id="fileInput" accept=".csv,text/csv" multiple>
+      </div>
+    </div>
+    <p class="current-source">현재 자료: <strong id="sourceName"></strong></p>
+    <div id="errorBox" class="notice notice-error" role="alert" hidden></div>
+  </header>
+
+  <section class="card" aria-labelledby="filterTitle">
+    <h2 id="filterTitle">필터</h2>
+    <div class="filter-row">
+      <fieldset class="year-filter">
+        <legend>연도 (복수 선택)</legend>
+        <div id="yearBoxes" class="year-boxes"></div>
+      </fieldset>
+      <div class="threshold">
+        <label for="threshold">주의 기준값 (%)</label>
+        <input type="number" id="threshold" min="0" max="100" step="1" value="70" inputmode="decimal">
+        <p class="hint">수료율이 이 값 미만이면 주의 (0~100)</p>
+      </div>
+    </div>
+    <p id="filterMsg" class="notice notice-warn" role="status" hidden></p>
+  </section>
+
+  <section aria-labelledby="sumTitle">
+    <h2 id="sumTitle" class="section-title">요약</h2>
+    <div id="summary" class="summary-grid"></div>
+  </section>
+
+  <section class="chart-area" aria-labelledby="chartTitle">
+    <h2 id="chartTitle" class="section-title">차트</h2>
+    <div class="chart-stack">
+      <div class="chart-grid">
+        <article class="card" id="pieCard"></article>
+        <article class="card" id="barCard"></article>
+      </div>
+      <article class="card" id="lineCard"></article>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="tableTitle">
+    <div class="card-head">
+      <h2 id="tableTitle">상세 표</h2>
+      <button type="button" id="csvBtn" class="btn">CSV 내려받기</button>
+    </div>
+    <div class="table-wrap" id="detailTable"></div>
+  </section>
+
+  <section class="card" aria-labelledby="exTitle">
+    <h2 id="exTitle">제외된 행</h2>
+    <div class="table-wrap" id="excludedTable"></div>
+  </section>
+</main>
+<script src="js/data.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>
